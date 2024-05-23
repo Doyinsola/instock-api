@@ -1,10 +1,10 @@
 const express = require("express");
 const CORS = require("cors");
 require("dotenv").config();
+const warehousesRoutes = require("./routes/warehouses");
 
 const app = express();
 const PORT = process.env.PORT || 8081;
-const warehousesRoutes = require("./routes/warehouses");
 
 app.use(CORS());
 app.use(express.json());

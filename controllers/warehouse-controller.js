@@ -11,6 +11,11 @@ const index = async (_req, res) => {
     }
 };
 
+function isValidPhoneNumber(contact_phone) {
+  const phonePattern = /^\+1 \(\d{3}\) \d{3}-\d{4}$/;
+  return phonePattern.test(contact_phone);
+}
+
 
 const add = async (req, res) => {
     
@@ -38,12 +43,11 @@ const add = async (req, res) => {
          return res.status(400).json({ error: "All fields are required." });
          }   
         
-        // add function
-    //  if (!isValidPhoneNumber(contact_phone)) {
-    //      return res
-    //      .status(400)
-    //      .json({ error: "Please input a valid phone number." });
-    //     }
+     if (!isValidPhoneNumber(contact_phone)) {
+         return res
+         .status(400)
+         .json({ error: "Please input a valid phone number." });
+        }
         
         // if (!isValidEmail(contact_email)) {
         //  return res.status(400).json({ error: "Please input a valid email." });

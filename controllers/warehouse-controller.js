@@ -13,25 +13,68 @@ const index = async (_req, res) => {
 
 
 const add = async (req, res) => {
-    if (!req.body.name || !req.body.email) {
-      return res.status(400).json({
-        message: "Please provide name and email for the user in the request",
-      });
-    }
-  
-    try {
-      const result = await knex("user").insert(req.body);
-  
-      const newUserId = result[0];
-      const createdUser = await knex("user").where({ id: newUserId });
-  
-      res.status(201).json(createdUser);
-    } catch (error) {
-      res.status(500).json({
-        message: `Unable to create new user: ${error}`,
-      });
-    }
+    
+    const {
+        warehouse_name,
+        address,
+        city,
+        country,
+        contact_name,
+        contact_position,
+        contact_phone,
+        contact_email,
+        } = req.body;
+
+    if (
+        !warehouse_name ||
+        !address ||
+        !city ||
+        !country ||
+        !contact_name ||
+        !contact_position ||
+        !contact_phone ||
+        !contact_email
+        ) {
+         return res.status(400).json({ error: "All fields are required." });
+         }   
+        
+        // add function
+    //  if (!isValidPhoneNumber(contact_phone)) {
+    //      return res
+    //      .status(400)
+    //      .json({ error: "Please input a valid phone number." });
+    //     }
+        
+        // if (!isValidEmail(contact_email)) {
+        //  return res.status(400).json({ error: "Please input a valid email." });
+        // }
+        
+        // const existingWarehouse = await knex('warehouse').where({warehouse_name} && {city}).first();
+         // if (existingWarehouse) {
+        // return res.status(400).json({error:'Warehouse already exists.'})
+        // }
+        
+        try {
+            const result = await knex("warehouses").insert(req.body);
+
+            const newWarehouseId = result[0];
+
+            const newWarehouse = await knex("warehouses")
+            .where({id:newWarehouseId})
+            .first();
+
+            res.status(201).json(newWarehouse);     
+        } catch (error) {
+        console.error("Error:", error);
+        return res.status(500).json({message: `Unable to create new warehouse: ${error}`});
+        
+        };
+ 
+    
   };
+
+
+ 
 
 
 

@@ -16,6 +16,27 @@ function isValidPhoneNumber(contact_phone) {
   return phonePattern.test(contact_phone);
 }
 
+function isValidEmail(contact_email) {
+  if (!contact_email.includes('@') || !contact_email.includes('.')) {
+      return false;
+  }
+
+  if (contact_email.lastIndexOf('.') <= contact_email.indexOf('@')) {
+      return false;
+  }
+
+  const atIndex = contact_email.indexOf('@');
+  if (contact_email[atIndex - 1] === ' ' || contact_email[atIndex + 1] === ' ') {
+      return false;
+  }
+
+  if (atIndex === 0 || contact_email.lastIndexOf('.') === contact_email.length - 1) {
+      return false;
+  }
+  return true;
+}
+
+
 
 const add = async (req, res) => {
     
@@ -49,14 +70,9 @@ const add = async (req, res) => {
          .json({ error: "Please input a valid phone number." });
         }
         
-        // if (!isValidEmail(contact_email)) {
-        //  return res.status(400).json({ error: "Please input a valid email." });
-        // }
-        
-        // const existingWarehouse = await knex('warehouse').where({warehouse_name} && {city}).first();
-         // if (existingWarehouse) {
-        // return res.status(400).json({error:'Warehouse already exists.'})
-        // }
+        if (!isValidEmail(contact_email)) {
+         return res.status(400).json({ error: "Please input a valid email." });
+        } .
         
         try {
             const result = await knex("warehouses").insert(req.body);

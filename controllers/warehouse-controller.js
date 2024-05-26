@@ -1,6 +1,5 @@
 const knex = require('knex')(require('../knexfile'));
 
-
 const index = async (_req, res) => {
     try {
       const data = await knex("warehouses");
@@ -36,8 +35,6 @@ function isValidEmail(contact_email) {
   return true;
 }
 
-
-
 const add = async (req, res) => {
     
     const {
@@ -72,7 +69,7 @@ const add = async (req, res) => {
         
         if (!isValidEmail(contact_email)) {
          return res.status(400).json({ error: "Please input a valid email." });
-        } .
+        }
         
         try {
             const result = await knex("warehouses").insert(req.body);
@@ -89,15 +86,9 @@ const add = async (req, res) => {
         return res.status(500).json({message: `Unable to create new warehouse: ${error}`});
         
         };
- 
-    
   };
 
-
  
-
-
-
 
   module.exports = {
     index,

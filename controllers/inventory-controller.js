@@ -1,4 +1,4 @@
-const knex = require('knex')(require('../knexfile'));
+const knex = require("knex")(require("../knexfile"));
 
 
 
@@ -26,3 +26,40 @@ if (atIndex === 0 || contact_email.lastIndexOf('.') === contact_email.length - 1
 }
 return true;
 }
+
+
+const index = async (_req, res) => {
+  try {
+    const data = await knex("inventories");
+    res.status(200).json(data);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Error retrieving Inventories");
+  }
+};
+
+const deleteInventory = async (req, res) => {
+    try {
+      const deletedInventory = await knex("inventories")
+        .where({ id: req.params.id })
+        .delete();
+      if (deletedInventory === 0) {
+        return res
+          .status(404)
+          .json({ message: `Inventory with ID ${req.params.id} not found.` });
+      }
+      res.status(204).send();
+    } catch (error) {
+      console.error(`Error deleting inventory with ID ${req.params.id}:`, error);
+      res.status(500).json({ error: "Internal server error." });
+    }
+  };
+
+
+
+module.exports = {
+  index,
+  deleteInventory,
+
+};
+

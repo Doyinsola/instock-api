@@ -8,7 +8,8 @@ router
 
 router
     .route("/:id")
-    .put(warehouseController.updateWarehouse);
+    .put(warehouseController.updateWarehouse)
+    .delete(warehouseController.deleteWarehouse);
 
 
 

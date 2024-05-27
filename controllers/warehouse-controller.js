@@ -77,6 +77,17 @@ const add = async (req, res) => {
             const newWarehouseId = result[0];
 
             const newWarehouse = await knex("warehouses")
+            .select(
+              "id",
+              "warehouse_name",
+              "address",
+              "city",
+              "country",
+              "contact_name",
+              "contact_position",
+              "contact_phone",
+              "contact_email"
+            )
             .where({id:newWarehouseId})
             .first();
 

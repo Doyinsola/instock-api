@@ -29,7 +29,7 @@ const inventories = async (req, res) => {
     console.log(error);
     res.status(400).send("Error retrieving Warehouse's inventories");
   }
-};
+}
 
 function isValidPhoneNumber(contact_phone) {
   const phonePattern = /^\+1 \(\d{3}\) \d{3}-\d{4}$/;
@@ -127,5 +127,3 @@ module.exports = {
   inventories,
   addWarehouse,
 };
-
-

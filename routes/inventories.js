@@ -10,4 +10,6 @@ router
     .route("/:id")
     .delete(inventoryController.deleteInventory);
 
+router.route("/:id").get(inventoryController.getItemById);
+
 module.exports = router;

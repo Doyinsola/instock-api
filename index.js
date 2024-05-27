@@ -6,7 +6,6 @@ const app = express();
 const PORT = process.env.PORT || 8081;
 
 app.use(CORS());
-
 app.use(express.json());
 
 const warehousesRoutes = require("./routes/warehouses");

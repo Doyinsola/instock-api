@@ -6,7 +6,9 @@ router
     .get(warehouseController.index)
     .post(warehouseController.addWarehouse);
 
-
+router
+    .route("/:id")
+    .put(warehouseController.updateWarehouse);
 
 
 

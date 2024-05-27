@@ -99,11 +99,79 @@ const addWarehouse = async (req, res) => {
       };
   };
 
-
+  const updateWarehouse = async (req, res) => {
+    
+    const {
+      warehouse_name,
+      address,
+      city,
+      country,
+      contact_name,
+      contact_position,
+      contact_phone,
+      contact_email,
+    } = req.body;
+  
+    if (
+      !warehouse_name ||
+      !address ||
+      !city ||
+      !country ||
+      !contact_name ||
+      !contact_position ||
+      !contact_phone ||
+      !contact_email
+    ) {
+      return res.status(400).json({ error: "All fields are required." });
+    }
+  
+    if (!isValidPhoneNumber(contact_phone)) {
+      return res.status(400).json({ error: "Please input a valid phone number." });
+    }
+  
+    if (!isValidEmail(contact_email)) {
+      return res.status(400).json({ error: "Please input a valid email." });
+    }
+    
+    
+    try {
+      const rowsUpdated = await knex("warehouses")
+        .where({ id: req.params.id })
+        .update(req.body);
+  
+      if (rowsUpdated === 0) {
+        return res.status(404).json({
+          message: `Warehouse with ID ${req.params.id} not found`,
+        });
+      }
+  
+      const updatedWarehouse = await knex("warehouses")
+        .where({
+          id: req.params.id,
+        })
+        .select(
+          "id", 
+          "warehouse_name", 
+          "address", "city", 
+          "country", 
+          "contact_name", 
+          "contact_position", 
+          "contact_phone", 
+          "contact_email")
+        .first();
+  
+      res.json(updatedWarehouse);
+    } catch (error) {
+      res.status(500).json({
+        message: `Unable to update warehouse with ID ${req.params.id}: ${error}`,
+      });
+    }
+  };
  
 module.exports = {
   index,
   addWarehouse,
+  updateWarehouse,
 
 };
 

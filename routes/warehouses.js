@@ -12,6 +12,7 @@ router
     .delete(warehouseController.deleteWarehouse);
 
 
+router.route("/:id/inventories").get(warehouseController.inventories);
 
 module.exports = router;
 

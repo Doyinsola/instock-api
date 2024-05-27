@@ -4,7 +4,7 @@ const warehouseController = require("../controllers/warehouse-controller");
 router
     .route("/")
     .get(warehouseController.index)
-    .post(warehouseController.add);
+    .post(warehouseController.addWarehouse);
 
 
 

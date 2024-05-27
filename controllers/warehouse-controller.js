@@ -35,8 +35,9 @@ function isValidEmail(contact_email) {
   return true;
 }
 
-const add = async (req, res) => {
-    
+
+const addWarehouse = async (req, res) => {
+
     const {
         warehouse_name,
         address,
@@ -67,42 +68,42 @@ const add = async (req, res) => {
          .json({ error: "Please input a valid phone number." });
         }
         
-        if (!isValidEmail(contact_email)) {
-         return res.status(400).json({ error: "Please input a valid email." });
-        }
+      if (!isValidEmail(contact_email)) {
+        return res.status(400).json({ error: "Please input a valid email." });
+      }
         
-        try {
-            const result = await knex("warehouses").insert(req.body);
+      try {
+          const result = await knex("warehouses").insert(req.body);
 
-            const newWarehouseId = result[0];
+          const newWarehouseId = result[0];
 
-            const newWarehouse = await knex("warehouses")
-            .select(
-              "id",
-              "warehouse_name",
-              "address",
-              "city",
-              "country",
-              "contact_name",
-              "contact_position",
-              "contact_phone",
-              "contact_email"
-            )
-            .where({id:newWarehouseId})
-            .first();
+          const newWarehouse = await knex("warehouses")
+          .select(
+            "id",
+            "warehouse_name",
+            "address",
+            "city",
+            "country",
+            "contact_name",
+            "contact_position",
+            "contact_phone",
+            "contact_email"
+          )
+          .where({id:newWarehouseId})
+          .first();
 
-            res.status(201).json(newWarehouse);     
-        } catch (error) {
-        console.error("Error:", error);
-        return res.status(500).json({message: `Unable to create new warehouse: ${error}`});
-        
-        };
+          res.status(201).json(newWarehouse);     
+      } catch (error) {
+      console.error("Error:", error);
+      return res.status(500).json({message: `Unable to create new warehouse: ${error}`});     
+      };
   };
+
 
  
+module.exports = {
+  index,
+  addWarehouse,
 
-  module.exports = {
-    index,
-    add,
+};
 
-  };

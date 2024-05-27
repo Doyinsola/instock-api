@@ -188,6 +188,23 @@ const addWarehouse = async (req, res) => {
       });
     }
   };
+
+const deleteWarehouse = async (req, res) => {
+  try {
+    const deletedWarehouse = await knex("warehouses")
+      .where({ id: req.params.id })
+      .delete();
+    if (deletedWarehouse === 0) {
+      return res
+        .status(404)
+        .json({ message: `Warehouse with ID ${req.params.id} not found.` });
+    }
+    res.status(204).send();
+  } catch (error) {
+    console.error(`Error deleting warehouse with ID ${req.params.id}:`, error);
+    res.status(500).json({ error: "Internal server error." });
+  }
+};
  
 
 
@@ -196,5 +213,6 @@ module.exports = {
   inventories,
   addWarehouse,
   updateWarehouse,
+  deleteWarehouse,
 
 };

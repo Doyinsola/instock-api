@@ -10,6 +10,23 @@ const index = async (_req, res) => {
   }
 };
 
+const getWarehouseById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const warehouse = await knex("warehouses").where({ id }).first();
+
+    if (!warehouse) {
+      return res.status(404).json({ message: "Warehouse not found" });
+    }
+
+    res.status(200).json(warehouse);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Error retrieving Warehouse");
+  }
+};
+
 const inventories = async (req, res) => {
   try {
     const validWarehouse = await knex("warehouses").where({
@@ -33,5 +50,6 @@ const inventories = async (req, res) => {
 
 module.exports = {
   index,
+  getWarehouseById,
   inventories,
 };

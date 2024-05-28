@@ -64,6 +64,57 @@ const getItemById = async (req, res) => {
   }
 };
 
+
+const editInventoryItem = async (req, res) => {
+  const { id } = req.params;
+  const { warehouse_id, item_name, description, category, status, quantity } = req.body;
+
+  if (
+    !warehouse_id ||
+    !item_name ||
+    !description ||
+    !category ||
+    !status ||
+    quantity === undefined
+  ) {
+    return res.status(400).json({ error: "All fields are required." });
+  }
+
+  if (isNaN(quantity)) {
+    return res.status(400).json({ error: "Quantity must be a numeric value." });
+  }
+
+  try {
+    const inventoryItem = await knex('inventories').where({ id }).first();
+    if (!inventoryItem) {
+      return res.status(404).json({ error: "Inventory ID not found." });
+    }
+
+    const warehouseExists = await knex('warehouses').where({ id: warehouse_id }).first();
+    if (!warehouseExists) {
+      return res.status(400).json({ error: "Warehouse ID does not exist." });
+    }
+
+    const updatedInventory = await knex('inventories')
+      .where({ id })
+      .update({
+        warehouse_id,
+        item_name,
+        description,
+        category,
+        status,
+        quantity
+      })
+      .returning('*');
+
+    res.status(200).json(updatedInventory[0]);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: `Unable to update inventory item: ${error.message}` });
+  }
+};
+
+
 const deleteInventory = async (req, res) => {
   try {
     const deletedInventory = await knex("inventories")
@@ -85,5 +136,6 @@ module.exports = {
   index,
   getItemById,
   deleteInventory,
+  editInventoryItem
 };
 

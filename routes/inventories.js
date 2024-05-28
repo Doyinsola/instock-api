@@ -4,6 +4,9 @@ const inventoryController = require("../controllers/inventory-controller");
 router
     .route("/")
     .get(inventoryController.index);
+    
+    
+    router.post(inventoryController.newInventoryItem);
 
 
 router

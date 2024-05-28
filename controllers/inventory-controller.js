@@ -30,7 +30,18 @@ function isValidEmail(contact_email) {
 
 const index = async (_req, res) => {
   try {
-    const data = await knex("inventories");
+    const data = await knex
+      .select(
+        "inventories.id",
+        "warehouses.warehouse_name",
+        "inventories.item_name",
+        "inventories.description",
+        "inventories.category",
+        "inventories.status",
+        "inventories.quantity"
+      )
+      .from("inventories")
+      .join("warehouses", "inventories.id", "warehouse_id");
     res.status(200).json(data);
   } catch (error) {
     console.log(error);

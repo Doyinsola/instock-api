@@ -1,7 +1,5 @@
 const knex = require("knex")(require("../knexfile"));
 
-
-
 function isValidPhoneNumber(contact_phone) {
   const phonePattern = /^\+1 \(\d{3}\) \d{3}-\d{4}$/;
   return phonePattern.test(contact_phone);
@@ -41,7 +39,7 @@ const index = async (_req, res) => {
         "inventories.quantity"
       )
       .from("inventories")
-      .join("warehouses", "inventories.id", "warehouse_id");
+      .join("warehouses", "warehouses.id", "warehouse_id");
     res.status(200).json(data);
   } catch (error) {
     console.log(error);

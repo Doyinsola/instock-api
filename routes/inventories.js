@@ -6,7 +6,10 @@ router
     .get(inventoryController.index);
     
     
-    router.post(inventoryController.newInventoryItem);
+router
+    .route("/")
+    .get(inventoryController.index)
+    .post(inventoryController.newInventoryItem);
 
 
 router

@@ -57,10 +57,25 @@ const getItemById = async (req, res) => {
 
 
 const newInventoryItem = async (req, res) => {
-  const { warehouse_id, item_name, description,category, status, quantity } = req.body;
+  const { 
+    warehouse_id, 
+    item_name, 
+    description, 
+    category, 
+    status, 
+    quantity 
+  } = req.body;
 
-  if (!warehouse_id || !item_name || !description || !category || !status || !quantity)  {
-    return res.status(400).json({ error: "All fields are required."});
+    console.log('Request Body:', req.body);
+
+  if (
+    !warehouse_id || 
+    !item_name || 
+    !description || 
+    !category || 
+    !status || 
+    quantity === undefined
+    ) { return res.status(400).json({ error: "All fields are required."});
   }
 
   if (isNaN(quantity)) {
